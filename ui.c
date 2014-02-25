@@ -370,7 +370,7 @@ static void draw_screen_locked(void)
     i = 0;
 
     // for logs, no menu items (define to move later)
-    #define TAB_LOG 2
+    #define TAB_LOG 1
 
     if (activeTab != TAB_LOG) {
       // draw menu
@@ -417,13 +417,11 @@ static void draw_screen_locked(void)
     ui_get_usbstate(str);
     gr_text(gr_fb_width()/4 * 3, yBar, str);
 
-#ifdef BOARD_WITH_CPCAP
     // draw battery
     int level = battery_level();
-    sprintf(str, "%d%%", level);
-
+    sprintf(str, "%d%%%s", level, usb_connected() ? "+":"");
+ 
     gr_text(gr_fb_width() - strlen(str)*gr_getfont_cwidth() - statusbar_right, yBar, str);
-#endif
 
     // draw tabcontrol
     int tableft=0;

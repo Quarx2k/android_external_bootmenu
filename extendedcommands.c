@@ -23,16 +23,13 @@
 #include <sys/wait.h>
 #include <sys/reboot.h>
 #include <unistd.h>
+#include <cutils/log.h>
 
 #include "common.h"
 #include "extendedcommands.h"
 #include "overclock.h"
 #include "minui/minui.h"
 #include "bootmenu_ui.h"
-
-#ifdef BOARD_WITH_CPCAP
-#include "battery/batt_cpcap.h"
-#endif
 
 #define MODES_COUNT 5
 const char* modes[] = {
@@ -916,9 +913,6 @@ int battery_level() {
     fscanf(f, "%d", &state);
     fclose(f);
   }
-#ifdef BOARD_WITH_CPCAP
-  state = cpcap_batt_percent();
-#endif
   return state;
 }
 

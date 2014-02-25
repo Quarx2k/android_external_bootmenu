@@ -16,14 +16,9 @@ bootmenu_sources := \
     default_bootmenu_ui.c \
     ui.c \
 
-BOOTMENU_VERSION:=2.2-beta
+BOOTMENU_VERSION:=2.3
 
 # Variables available in BoardConfig.mk related to mount devices
-
-ifeq ($(BOARD_WITH_CPCAP),true)
-    bootmenu_sources += battery/batt_cpcap.c
-    EXTRA_CFLAGS += -DBOARD_WITH_CPCAP
-endif
 
 ifeq ($(TARGET_CPU_SMP),true)
     EXTRA_CFLAGS += -DUSE_DUALCORE_DIRTY_HACK
@@ -76,7 +71,7 @@ LOCAL_CFLAGS += \
 LOCAL_STATIC_LIBRARIES := libminui_bm libpixelflinger_static libpng libz  libreboot
 LOCAL_STATIC_LIBRARIES += libstdc++ libc libcutils liblog
 
-LOCAL_FORCE_STATIC_EXECUTABLE := true
+#LOCAL_FORCE_STATIC_EXECUTABLE := true
 
 LOCAL_MODULE_PATH := $(PRODUCT_OUT)/system/bin
 

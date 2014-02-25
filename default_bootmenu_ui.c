@@ -28,7 +28,7 @@ char* MENU_HEADERS[] = {
 
 char* TABS[] = {
     "Bootmenu",
-    "Settings",
+  /*  "Settings", */
     "Logs",
     NULL
 };

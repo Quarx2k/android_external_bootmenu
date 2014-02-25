@@ -159,8 +159,8 @@ struct UiMenuResult get_menu_selection(char** headers, char** tabs, struct UiMen
             case NO_ACTION:
               break;
             case ACTION_NEXTTAB:
-              ret.result = ui_setTab_next();
-              ret.type = RESULT_TAB;
+              //ret.result = ui_setTab_next();
+              //ret.type = RESULT_TAB;
               break;
           }
         } else if (!menu_only) {
@@ -414,46 +414,23 @@ static int run_bootmenu(void) {
  *
  */
 int main(int argc, char **argv) {
-  int result;
+  int result = 0;
 
-  if (argc == 2 && 0 == strcmp(argv[1], "postbootmenu")) {
-    /* init.rc call: "exec bootmenu postbootmenu" */
-    exec_script(FILE_OVERCLOCK, DISABLE);
-    result = exec_script(FILE_POST_MENU, DISABLE);
-    bypass_sign("no");
-    sync();
-    return result;
-  }
-  else if (NULL != strstr(argv[0], "bootmenu")) {
-    /* Direct UI, without key test */
+  if (argv[1] != NULL && strcmp(argv[1], "bootmenu") == 0) {
+    /* Boot with key test */
     fprintf(stdout, "Run BootMenu..\n");
-    exec_script(FILE_PRE_MENU, DISABLE);
-    int mode = get_bootmode(0,0);
-    result = run_bootmenu_ui(mode);
-    sync();
-    return result;
-  }
-  else if (argc >= 3 && 0 == strcmp(argv[2], "userdata")) {
-    /* init.rc call: "exec logwrapper mount.sh userdata" */
     result = run_bootmenu();
     real_execute(argc, argv);
     bypass_sign("no");
     sync();
-    return result;
-  }
-  else if (argc >= 3 && 0 == strcmp(argv[2], "pds")) {
-    /* kept for stock rom compatibility, please use postbootmenu parameter */
-    real_execute(argc, argv);
-    exec_script(FILE_OVERCLOCK, DISABLE);
-    result = exec_script(FILE_POST_MENU, DISABLE);
-    bypass_sign("no");
+  } else  {
+    /* Direct UI, without key test */
+    fprintf(stdout, "Run BootMenu UI..\n");
+    exec_script(FILE_PRE_MENU, DISABLE);
+    int mode = get_bootmode(0,0);
+    result = run_bootmenu_ui(mode);
     sync();
-    return result;
   }
-  else {
-    return real_execute(argc, argv);
-  }
-
-  return 0;
+  return result;
 }
 
